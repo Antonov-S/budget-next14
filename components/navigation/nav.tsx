@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { auth } from "@/server/auth";
+import { Button } from "@/components/ui/button";
 import { UserButton } from "./user-button";
 
 export default async function Nav() {
@@ -9,7 +10,13 @@ export default async function Nav() {
     <header className="py-8">
       <nav>
         <ul className="flex justify-between">
-          <li>Logo</li>
+          <li>
+            <Link href={"/"}>
+              <Button variant={"ghost"} className="text-xl font-bold">
+                Budget
+              </Button>
+            </Link>
+          </li>
           <li>
             {!session ? (
               <button>
