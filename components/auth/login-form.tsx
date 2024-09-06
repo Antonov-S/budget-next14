@@ -2,7 +2,7 @@
 
 import { AuthCard } from "@/components/auth/auth-card";
 
-export default function LoginForm() {
+export const LoginForm = () => {
   return (
     <AuthCard
       cardTitle="Welcome back!"
@@ -10,9 +10,7 @@ export default function LoginForm() {
       backButtonLabel="Create a new account"
       showSocials
     >
-      <div>
-        <h1>Hey</h1>
-      </div>
+      <div></div>
     </AuthCard>
   );
-}
+};

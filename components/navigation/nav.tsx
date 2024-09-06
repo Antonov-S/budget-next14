@@ -1,32 +1,26 @@
 import Link from "next/link";
-import { auth } from "@/server/auth";
 
+import { auth } from "@/server/auth";
 import { UserButton } from "./user-button";
-import { Button } from "../ui/button";
-import { LogIn } from "lucide-react";
 
 export default async function Nav() {
   const session = await auth();
-
   return (
-    <header>
-      <nav className="bg-slate-500 py-4">
+    <header className="py-8">
+      <nav>
         <ul className="flex justify-between">
           <li>Logo</li>
-          {!session ? (
-            <li>
-              <Button asChild>
-                <Link href="/auth/login">
-                  <LogIn />
-                  <span>Login</span>
+          <li>
+            {!session ? (
+              <button>
+                <Link aria-label="sign-in" href={"/auth/login"}>
+                  login
                 </Link>
-              </Button>
-            </li>
-          ) : (
-            <li>
+              </button>
+            ) : (
               <UserButton expires={session?.expires} user={session?.user} />
-            </li>
-          )}
+            )}
+          </li>
         </ul>
       </nav>
     </header>

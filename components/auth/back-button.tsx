@@ -4,17 +4,18 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
-type BackButtonType = {
+export const BackButton = ({
+  href,
+  label
+}: {
   href: string;
   label: string;
-};
-
-export default function BackButton({ href, label }: BackButtonType) {
+}) => {
   return (
     <Button className="font-medium w-full">
-      <Link href={href} aria-lebel={label}>
+      <Link aria-label={label} href={href}>
         {label}
       </Link>
     </Button>
   );
-}
+};

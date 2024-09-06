@@ -7,7 +7,8 @@ export const UserButton = ({ user }: Session) => {
   return (
     <div>
       <h1>{user?.email}</h1>
-      <button onClick={() => signOut()}>Sign out</button>
+
+      <button onClick={() => signOut()}>sign out</button>
     </div>
   );
 };

@@ -6,7 +6,7 @@ import {
   CardTitle
 } from "@/components/ui/card";
 import Socials from "@/components/auth/socials";
-import BackButton from "@/components/auth/back-button";
+import { BackButton } from "@/components/auth/back-button";
 
 type CardWrapperProps = {
   children: React.ReactNode;
