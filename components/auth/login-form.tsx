@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -31,7 +32,14 @@ export const LoginForm = () => {
     }
   });
 
-  const { execute, status } = useAction(emailSignIn, {});
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const { execute, status } = useAction(emailSignIn, {
+    onSuccess(data) {
+      console.log(data);
+    }
+  });
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     execute(values);
