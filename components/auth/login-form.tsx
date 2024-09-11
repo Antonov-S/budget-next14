@@ -1,7 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAction } from "next-safe-action/hooks";
 
 import { LoginSchema } from "@/types/login-schema";
 import { AuthCard } from "@/components/auth/auth-card";
@@ -17,7 +19,8 @@ import {
 import * as z from "zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import Link from "next/link";
+import { emailSignIn } from "@/server/actions/email-signin";
+import { cn } from "@/lib/utils";
 
 export const LoginForm = () => {
   const form = useForm({
@@ -28,8 +31,10 @@ export const LoginForm = () => {
     }
   });
 
+  const { execute, status } = useAction(emailSignIn, {});
+
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    console.log(values);
+    execute(values);
   };
 
   return (
@@ -87,7 +92,13 @@ export const LoginForm = () => {
               </Button>
             </div>
 
-            <Button type="submit" className="w-full my-2">
+            <Button
+              type="submit"
+              className={cn(
+                "w-full my-2",
+                status === "executing" ? "animate-pulse" : ""
+              )}
+            >
               {"Login"}
             </Button>
           </form>

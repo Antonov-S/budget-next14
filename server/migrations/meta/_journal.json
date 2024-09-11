@@ -22,6 +22,13 @@
       "when": 1725583110080,
       "tag": "0002_smart_network",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1726015350165,
+      "tag": "0003_slow_jasper_sitwell",
+      "breakpoints": true
     }
   ]
 }
