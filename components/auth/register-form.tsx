@@ -21,6 +21,7 @@ import * as z from "zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
+import { emailRegister } from "@/server/actions/email-register";
 
 export const RegisterForm = () => {
   const form = useForm<z.infer<typeof RegisterSchema>>({
@@ -34,9 +35,16 @@ export const RegisterForm = () => {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const { execute, status } = useAction(emailRegister, {
+    onSuccess(data) {
+      if (data.data?.success) {
+        console.log(data.data?.success);
+      }
+    }
+  });
 
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
-    console.log(values);
+    execute(values);
   };
 
   return (
