@@ -13,10 +13,14 @@ import { createId } from "@paralleldrive/cuid2";
 export const RoleEnum = pgEnum("roles", ["user", "admin"]);
 
 export const users = pgTable("user", {
-  id: text("id").notNull().primaryKey(),
+  id: text("id")
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => createId()),
   name: text("name"),
   email: text("email").notNull(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
+  password: text("password"),
   image: text("image"),
   twoFactorEnabled: boolean("twoFactorEnabled").default(false),
   role: RoleEnum("roles").default("user")

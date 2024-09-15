@@ -7,6 +7,7 @@ import { eq } from "drizzle-orm";
 import { users } from "../schema";
 import { db } from "..";
 import { RegisterSchema } from "@/types/register-schema";
+import { generateEmailVerificationToken } from "./tokens";
 
 export const emailRegister = actionClient
   .schema(RegisterSchema)
@@ -20,12 +21,27 @@ export const emailRegister = actionClient
       where: eq(users.email, email)
     });
 
-    // if (existingUser) {
-    //   //   if (!existingUser.emailVerified) {
-    //   //     const verificationToken =;
-    //   //   }
-    //   return { error: "Email already in use" };
-    // }
+    if (existingUser) {
+      if (!existingUser.emailVerified) {
+        const verificationToken = await generateEmailVerificationToken(email);
 
-    return { success: "Success" };
+        // await sendVerificationEmail();
+
+        return { success: "Email Confirmation resent" };
+      }
+      return { error: "Email already in use" };
+    }
+
+    //Logic for when the user is not registered
+    await db.insert(users).values({
+      email,
+      name,
+      password: hashedPassword
+    });
+
+    const verificationToken = await generateEmailVerificationToken(email);
+
+    // await sendVerificationEmail();
+
+    return { success: "Confirmation Email Sent!" };
   });

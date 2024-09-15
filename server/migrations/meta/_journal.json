@@ -36,6 +36,13 @@
       "when": 1726359629832,
       "tag": "0004_fixed_steel_serpent",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1726361664448,
+      "tag": "0005_mighty_magdalene",
+      "breakpoints": true
     }
   ]
 }
