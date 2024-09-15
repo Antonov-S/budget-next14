@@ -8,6 +8,7 @@ import {
   boolean
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "next-auth/adapters";
+import { createId } from "@paralleldrive/cuid2";
 
 export const RoleEnum = pgEnum("roles", ["user", "admin"]);
 
@@ -42,5 +43,20 @@ export const accounts = pgTable(
     compoundKey: primaryKey({
       columns: [account.provider, account.providerAccountId]
     })
+  })
+);
+
+export const emailTokens = pgTable(
+  "email_tokens",
+  {
+    id: text("id")
+      .notNull()
+      .$defaultFn(() => createId()),
+    token: text("token").notNull(),
+    expires: timestamp("expires", { mode: "date" }).notNull(),
+    email: text("email").notNull()
+  },
+  vt => ({
+    compoundKey: primaryKey({ columns: [vt.id, vt.token] })
   })
 );

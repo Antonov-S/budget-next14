@@ -29,6 +29,13 @@
       "when": 1726015350165,
       "tag": "0003_slow_jasper_sitwell",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1726359629832,
+      "tag": "0004_fixed_steel_serpent",
+      "breakpoints": true
     }
   ]
 }
