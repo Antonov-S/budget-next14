@@ -8,6 +8,7 @@ import { users } from "../schema";
 import { db } from "..";
 import { RegisterSchema } from "@/types/register-schema";
 import { generateEmailVerificationToken } from "./tokens";
+import { sendVerificationEmail } from "./email";
 
 export const emailRegister = actionClient
   .schema(RegisterSchema)
@@ -25,7 +26,10 @@ export const emailRegister = actionClient
       if (!existingUser.emailVerified) {
         const verificationToken = await generateEmailVerificationToken(email);
 
-        // await sendVerificationEmail();
+        await sendVerificationEmail(
+          verificationToken[0].email,
+          verificationToken[0].token
+        );
 
         return { success: "Email Confirmation resent" };
       }
@@ -41,7 +45,10 @@ export const emailRegister = actionClient
 
     const verificationToken = await generateEmailVerificationToken(email);
 
-    // await sendVerificationEmail();
+    await sendVerificationEmail(
+      verificationToken[0].email,
+      verificationToken[0].token
+    );
 
     return { success: "Confirmation Email Sent!" };
   });

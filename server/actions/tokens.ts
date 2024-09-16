@@ -18,23 +18,22 @@ export const getVerificationTokenByEmail = async (email: string) => {
 };
 
 export const generateEmailVerificationToken = async (email: string) => {
-  try {
-    const token = crypto.randomUUID();
-    const expires = new Date(new Date().getTime() + 3600 * 1000);
+  const token = crypto.randomUUID();
+  const expires = new Date(new Date().getTime() + 3600 * 1000);
 
-    const existingToken = await getVerificationTokenByEmail(email);
+  const existingToken = await getVerificationTokenByEmail(email);
 
-    if (existingToken) {
-      await db.delete(emailTokens).where(eq(emailTokens.id, existingToken.id));
-    }
+  if (existingToken) {
+    await db.delete(emailTokens).where(eq(emailTokens.id, existingToken.id));
+  }
 
-    const verificationToken = await db.insert(emailTokens).values({
+  const verificationToken = await db
+    .insert(emailTokens)
+    .values({
       email,
       token,
       expires
-    });
-    return verificationToken;
-  } catch (error) {
-    return { error: "Error in generateEmailVerificationToken Fn" };
-  }
+    })
+    .returning();
+  return verificationToken;
 };
