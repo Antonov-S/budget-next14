@@ -43,6 +43,13 @@
       "when": 1726361664448,
       "tag": "0005_mighty_magdalene",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1726610532237,
+      "tag": "0006_absent_zuras",
+      "breakpoints": true
     }
   ]
 }

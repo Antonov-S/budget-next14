@@ -9,5 +9,5 @@ import { db } from "..";
 export const emailRegister = actionClient
   .schema(LoginSchema)
   .action(async ({ parsedInput: { email, password, code } }) => {
-    return { success: email };
+    return { success: "Something created..." };
   });
