@@ -24,7 +24,7 @@ export const newPassword = actionClient
     }
 
     const hasExpired = new Date(existingToken.expires) < new Date();
-    if (!hasExpired) {
+    if (hasExpired) {
       return { error: "Token has expired" };
     }
 
