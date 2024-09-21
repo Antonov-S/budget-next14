@@ -9,9 +9,9 @@ export default async function Nav() {
   return (
     <header className="py-8">
       <nav>
-        <ul className="flex justify-between">
+        <ul className="flex justify-between items-center">
           <li>
-            <Link href={"/"}>
+            <Link href={"/"} aria-label="budget logo">
               <Button variant={"ghost"} className="text-xl font-bold">
                 Budget
               </Button>

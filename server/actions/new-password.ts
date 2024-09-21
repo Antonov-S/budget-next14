@@ -25,6 +25,11 @@ export const newPassword = actionClient
 
     const hasExpired = new Date(existingToken.expires) < new Date();
     if (hasExpired) {
+      await dbPool.transaction(async tx => {
+        await tx
+          .delete(passwordResetTokens)
+          .where(eq(passwordResetTokens.id, existingToken.id));
+      });
       return { error: "Token has expired" };
     }
 
