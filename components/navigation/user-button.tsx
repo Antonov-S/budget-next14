@@ -69,7 +69,7 @@ export const UserButton = ({ user }: Session) => {
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          onClick={() => router.push("/dashboard/orders")}
+          onClick={() => router.push("/dashboard/payments")}
           className="group py-2 font-medium cursor-pointer"
         >
           <FaPlusMinus
