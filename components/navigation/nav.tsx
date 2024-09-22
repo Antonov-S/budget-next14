@@ -12,7 +12,7 @@ export default async function Nav() {
         <ul className="flex justify-between items-center">
           <li>
             <Link href={"/"} aria-label="budget logo">
-              <Button variant={"ghost"} className="text-xl font-bold">
+              <Button variant={"ghost"} className="text-2xl font-bold">
                 Budget
               </Button>
             </Link>
