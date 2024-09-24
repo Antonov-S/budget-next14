@@ -36,6 +36,8 @@ type SettingsCardProps = {
 };
 
 export default function SettingsCard(session: SettingsCardProps) {
+  console.log(session);
+
   const form = useForm<z.infer<typeof SettingsSchema>>({
     resolver: zodResolver(SettingsSchema),
     defaultValues: {
@@ -76,7 +78,7 @@ export default function SettingsCard(session: SettingsCardProps) {
                   <FormControl>
                     <Input
                       placeholder="John Doe"
-                      disabled={status === "executing"}
+                      //   disabled={status === "executing"}
                       {...field}
                     />
                   </FormControl>
@@ -114,7 +116,7 @@ export default function SettingsCard(session: SettingsCardProps) {
                     <Input
                       placeholder="User Image"
                       type="hidden"
-                      disabled={status === "executing"}
+                      //   disabled={status === "executing"}
                       {...field}
                     />
                   </FormControl>
@@ -132,7 +134,7 @@ export default function SettingsCard(session: SettingsCardProps) {
                   <FormControl>
                     <Input
                       placeholder="*******"
-                      disabled={status === "executing"}
+                      //   disabled={status === "executing"}
                       {...field}
                     />
                   </FormControl>
@@ -150,7 +152,7 @@ export default function SettingsCard(session: SettingsCardProps) {
                   <FormControl>
                     <Input
                       placeholder="*****"
-                      disabled={status === "executing"}
+                      //   disabled={status === "executing"}
                       {...field}
                     />
                   </FormControl>
@@ -170,7 +172,7 @@ export default function SettingsCard(session: SettingsCardProps) {
                   </FormDescription>
                   <FormControl>
                     <Switch
-                      disabled={status === "executing"}
+                      //   disabled={status === "executing"}
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
@@ -182,7 +184,10 @@ export default function SettingsCard(session: SettingsCardProps) {
 
             <FormError message={error} />
             <FormSuccess message={success} />
-            <Button type="submit" disabled={status === "executing"}>
+            <Button
+              type="submit"
+              // disabled={status === "executing"}
+            >
               Update your settings
             </Button>
           </form>
