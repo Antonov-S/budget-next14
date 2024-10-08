@@ -65,8 +65,8 @@ export default function SettingsCard(session: SettingsCardProps) {
   });
 
   const onSubmit = (values: z.infer<typeof SettingsSchema>) => {
-    console.log(values);
     execute(values);
+    console.log(values);
   };
 
   return (
