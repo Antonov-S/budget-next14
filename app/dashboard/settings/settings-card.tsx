@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { Session } from "next-auth";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import Image from "next/image";
-import { z } from "zod";
 import { useAction } from "next-safe-action/hooks";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
 
 import {
   Card,
@@ -15,7 +15,6 @@ import {
   CardHeader,
   CardTitle
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -30,15 +29,19 @@ import { SettingsSchema } from "@/types/settings-schema";
 import { Switch } from "@/components/ui/switch";
 import { FormError } from "@/components/auth/form-error";
 import { FormSuccess } from "@/components/auth/form-success";
+import { Button } from "@/components/ui/button";
 import { settings } from "@/server/actions/settings";
+import { UploadButton } from "@/app/api/uploadthing/upload";
 
-type SettingsCardProps = {
+type SettingsForm = {
   session: Session;
 };
 
-export default function SettingsCard(session: SettingsCardProps) {
-  console.log(session);
-
+export default function SettingsCard(session: SettingsForm) {
+  const [error, setError] = useState<string | undefined>();
+  const [success, setSuccess] = useState<string | undefined>();
+  const [avatarUploading, setAvatarUploading] = useState(false);
+  // console.log(session.session.user);
   const form = useForm<z.infer<typeof SettingsSchema>>({
     resolver: zodResolver(SettingsSchema),
     defaultValues: {
@@ -46,18 +49,15 @@ export default function SettingsCard(session: SettingsCardProps) {
       newPassword: undefined,
       name: session.session.user?.name || undefined,
       email: session.session.user?.email || undefined,
-      image: session.session.user?.image || undefined,
+      image: session.session.user.image || undefined,
       isTwoFactorEnabled: session.session.user?.isTwoFactorEnabled || undefined
     }
   });
-  const [error, setError] = useState<string | undefined>(undefined);
-  const [success, setSuccess] = useState<string | undefined>(undefined);
-  const [avatarUploading, setAvatarUploading] = useState(false);
 
   const { execute, status } = useAction(settings, {
     onSuccess: data => {
-      if (data?.data?.success) setSuccess(data?.data?.success);
-      if (data?.data?.error) setError(data?.data?.error);
+      if (data.data?.success) setSuccess(data.data?.success);
+      if (data.data?.error) setError(data.data?.error);
     },
     onError: error => {
       setError("Something went wrong");
@@ -66,7 +66,6 @@ export default function SettingsCard(session: SettingsCardProps) {
 
   const onSubmit = (values: z.infer<typeof SettingsSchema>) => {
     execute(values);
-    console.log(values);
   };
 
   return (
@@ -87,7 +86,7 @@ export default function SettingsCard(session: SettingsCardProps) {
                   <FormControl>
                     <Input
                       placeholder="John Doe"
-                      //   disabled={status === "executing"}
+                      disabled={status === "executing"}
                       {...field}
                     />
                   </FormControl>
@@ -98,7 +97,6 @@ export default function SettingsCard(session: SettingsCardProps) {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="image"
@@ -120,20 +118,46 @@ export default function SettingsCard(session: SettingsCardProps) {
                         alt="User Image"
                       />
                     )}
+                    <UploadButton
+                      className="scale-75 ut-button:ring-primary ut-label:bg-red-50 ut-button:bg-primary/75  hover:ut-button:bg-primary/100 ut:button:transition-all ut-button:duration-500  ut-label:hidden ut-allowed-content:hidden"
+                      endpoint="avatarUploader"
+                      onUploadBegin={() => {
+                        setAvatarUploading(true);
+                      }}
+                      onUploadError={error => {
+                        form.setError("image", {
+                          type: "validate",
+                          message: error.message
+                        });
+                        setAvatarUploading(false);
+                        return;
+                      }}
+                      onClientUploadComplete={res => {
+                        form.setValue("image", res[0].url!);
+                        setAvatarUploading(false);
+                        return;
+                      }}
+                      content={{
+                        button({ ready }) {
+                          if (ready) return <div>Change Avatar</div>;
+                          return <div>Uploading...</div>;
+                        }
+                      }}
+                    />
                   </div>
                   <FormControl>
                     <Input
                       placeholder="User Image"
                       type="hidden"
-                      //   disabled={status === "executing"}
+                      disabled={status === "executing"}
                       {...field}
                     />
                   </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="password"
@@ -142,19 +166,18 @@ export default function SettingsCard(session: SettingsCardProps) {
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="*******"
+                      placeholder="********"
                       disabled={
-                        status === "executing" ||
-                        session.session.user.isOAuth === true
+                        status === "executing" || session?.session.user.isOAuth
                       }
                       {...field}
                     />
                   </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="newPassword"
@@ -163,19 +186,18 @@ export default function SettingsCard(session: SettingsCardProps) {
                   <FormLabel>New Password</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="*****"
+                      placeholder="*******"
                       disabled={
-                        status === "executing" ||
-                        session.session.user.isOAuth === true
+                        status === "executing" || session?.session.user.isOAuth
                       }
                       {...field}
                     />
                   </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="isTwoFactorEnabled"
@@ -195,16 +217,16 @@ export default function SettingsCard(session: SettingsCardProps) {
                       onCheckedChange={field.onChange}
                     />
                   </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}
             />
-
             <FormError message={error} />
             <FormSuccess message={success} />
             <Button
               type="submit"
-              // disabled={status === "executing"}
+              disabled={status === "executing" || avatarUploading}
             >
               Update your settings
             </Button>
