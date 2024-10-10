@@ -72,7 +72,9 @@ export default function SettingsCard(session: SettingsForm) {
     <Card>
       <CardHeader>
         <CardTitle>Your Settings</CardTitle>
-        <CardDescription>Update your account settings</CardDescription>
+        <CardDescription className="text-xs italic">
+          Update your account settings
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -90,7 +92,7 @@ export default function SettingsCard(session: SettingsForm) {
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>
+                  <FormDescription className="text-xs italic">
                     This is your public display name.
                   </FormDescription>
                   <FormMessage />
@@ -112,9 +114,10 @@ export default function SettingsCard(session: SettingsForm) {
                     {form.getValues("image") && (
                       <Image
                         src={form.getValues("image")!}
-                        width={42}
-                        height={42}
+                        width={40}
+                        height={40}
                         className="rounded-full"
+                        style={{ width: "40px", height: "40px" }}
                         alt="User Image"
                       />
                     )}
@@ -145,7 +148,7 @@ export default function SettingsCard(session: SettingsForm) {
                           }
                         }}
                       />
-                      <span className="text-xs italic my-1">
+                      <span className="text-xs italic text-muted-foreground my-1">
                         Size up to 2MB
                       </span>
                     </div>
@@ -209,7 +212,7 @@ export default function SettingsCard(session: SettingsForm) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Two Factor Authentication</FormLabel>
-                  <FormDescription>
+                  <FormDescription className="text-xs italic">
                     Enable two factor authentication for your account
                   </FormDescription>
                   <FormControl>
