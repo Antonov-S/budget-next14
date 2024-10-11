@@ -26,11 +26,6 @@ export default async function DashboardLayout({
       icon: <FaPlusMinus size={16} />
     },
     {
-      label: "Categories",
-      path: "/dashboard/add-category",
-      icon: <HiDocumentAdd size={16} />
-    },
-    {
       label: "Budget",
       path: "/dashboard/budgets",
       icon: <HiCurrencyEuro size={16} />
@@ -40,11 +35,6 @@ export default async function DashboardLayout({
   const adminLinks =
     session?.user.role === "admin"
       ? [
-          {
-            label: "Analytics",
-            path: "/dashboard/analytics",
-            icon: <BarChart size={16} />
-          },
           {
             label: "Users",
             path: "/dashboard/users",

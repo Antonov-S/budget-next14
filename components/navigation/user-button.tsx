@@ -40,7 +40,13 @@ export const UserButton = ({ user }: Session) => {
       <DropdownMenuTrigger>
         <Avatar>
           {user?.image && (
-            <Image src={user.image} alt={user.name!} width={40} height={40} />
+            <Image
+              src={user.image}
+              alt={user.name!}
+              width={40}
+              height={40}
+              style={{ width: "40px", height: "40px" }}
+            />
           )}
           {!user!.image && (
             <AvatarFallback className="bg-primary/10">
