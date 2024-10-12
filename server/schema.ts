@@ -5,12 +5,15 @@ import {
   primaryKey,
   integer,
   pgEnum,
-  boolean
+  boolean,
+  serial,
+  real
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "next-auth/adapters";
 import { createId } from "@paralleldrive/cuid2";
 
 export const RoleEnum = pgEnum("roles", ["user", "admin"]);
+export const TypePaymentEnum = pgEnum("paymentEnum", ["expense", "income"]);
 
 export const users = pgTable("user", {
   id: text("id")
@@ -95,3 +98,12 @@ export const twoFactorTokens = pgTable(
     compoundKey: primaryKey({ columns: [vt.id, vt.token] })
   })
 );
+
+export const payments = pgTable("payment", {
+  id: serial("id").primaryKey(),
+  description: text("description").notNull(),
+  title: text("title").notNull(),
+  created: timestamp("created").defaultNow(),
+  amount: real("amount").notNull(),
+  type: TypePaymentEnum("payment-type")
+});
