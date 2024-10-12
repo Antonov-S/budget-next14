@@ -24,7 +24,7 @@ export const createPayment = actionClient
           .where(eq(payments.id, id))
           .returning();
         revalidatePath("/dashboard/payments");
-        return { success: `Product ${editedPayment[0].title} has been edited` };
+        return { success: `Payment ${editedPayment[0].title} has been edited` };
       }
       //NEW PAYMENT
       if (!id) {
@@ -33,7 +33,7 @@ export const createPayment = actionClient
           .values({ description, amount, title, type })
           .returning();
         revalidatePath("/dashboard/payments");
-        return { success: `Product ${newPayment[0].title} has been created` };
+        return { success: `Payment ${newPayment[0].title} has been created` };
       }
     } catch (err) {
       return { error: "Failed to create payment" };

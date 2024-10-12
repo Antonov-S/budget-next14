@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAction } from "next-safe-action/hooks";
+import { toast } from "sonner";
 import { Euro } from "lucide-react";
 
 import { PaymentSchema, zPaymentSchema } from "@/types/payments-schema";
@@ -26,6 +27,7 @@ import {
   CardDescription,
   CardFooter
 } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
 export default function PaymentForm() {
   type PaymentType = "expense" | "income";
@@ -41,13 +43,22 @@ export default function PaymentForm() {
     mode: "onChange"
   });
 
+  const router = useRouter();
+
   const { execute, status } = useAction(createPayment, {
     onSuccess: data => {
+      if (data.data?.error) {
+        toast.error(data.data?.error);
+      }
       if (data.data?.success) {
-        console.log(data.data?.success);
+        router.push("/");
+        toast.success(data.data?.success);
       }
     },
-    onError: error => console.log(error)
+    onExecute: data => {
+      toast.loading("Creating payment...");
+    }
+    // onError: error => console.log(error)
   });
 
   async function onSubmit(values: zPaymentSchema) {
