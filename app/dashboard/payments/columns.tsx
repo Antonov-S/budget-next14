@@ -13,6 +13,9 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { useAction } from "next-safe-action/hooks";
+import { deletePayment } from "@/server/actions/delete-payemt";
+import { toast } from "sonner";
 
 type PaymentColumn = {
   id: number;
@@ -21,6 +24,46 @@ type PaymentColumn = {
   amount: number;
   type: "expense" | "income" | null;
   date: Date | null;
+};
+
+const ActionCell = ({ row }: { row: Row<PaymentColumn> }) => {
+  const { status, execute } = useAction(deletePayment, {
+    onSuccess: data => {
+      if (data.data?.error) {
+        toast.error(data.data?.error);
+      }
+      if (data.data?.success) {
+        toast.success(data.data?.success);
+      }
+    },
+    onExecute: () => {
+      toast.loading("Deleting Payment");
+    }
+  });
+  const payment = row.original;
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant={"ghost"} className="h-8 w-8 p-0">
+          <MoreHorizontal className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem className="dark:focus:bg-primary focus:bg-primary/50 cursor-pointer">
+          <Link href={`/dashboard/payments?id=${payment.id}`}>
+            Edit Product
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => execute({ id: payment.id })}
+          className="dark:focus:bg-destructive focus:bg-destructive/50 cursor-pointer"
+        >
+          Delete Product
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
 };
 
 export const columns: ColumnDef<PaymentColumn>[] = [
@@ -96,22 +139,6 @@ export const columns: ColumnDef<PaymentColumn>[] = [
   {
     accessorKey: "actions",
     header: "Actions",
-    cell: ({ row }: { row: Row<PaymentColumn> }) => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem className="dark:focus:bg-primary focus:bg-primary/50 cursor-pointer">
-            Edit
-          </DropdownMenuItem>
-          <DropdownMenuItem className="dark:focus:bg-destructive focus:bg-destructive/50 cursor-pointer">
-            Delete
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    )
+    cell: ActionCell
   }
 ];
