@@ -37,7 +37,7 @@ export default function PaymentForm() {
     defaultValues: {
       title: "",
       description: "",
-      type: "expense", //default value
+      type: "expense",
       amount: 0
     },
     mode: "onChange"
@@ -45,24 +45,31 @@ export default function PaymentForm() {
 
   const router = useRouter();
 
+  let loadingToastId: string | number;
+
   const { execute, status } = useAction(createPayment, {
     onSuccess: data => {
       if (data.data?.error) {
         toast.error(data.data?.error);
       }
       if (data.data?.success) {
+        toast.dismiss(loadingToastId);
         router.push("/dashboard/payments");
-        toast.success(data.data?.success);
+        toast.success(data.data?.success, { duration: 2000 });
       }
     },
-    onExecute: data => {
-      // toast.loading("Creating payment...");
+    onExecute: () => {
+      loadingToastId = toast.loading("Creating payment...");
     }
-    // onError: error => console.log(error)
   });
 
   async function onSubmit(values: zPaymentSchema) {
-    execute(values);
+    try {
+      execute(values);
+    } catch (error) {
+      toast.dismiss(loadingToastId);
+      toast.error("Failed to create payment");
+    }
   }
 
   return (
@@ -147,11 +154,7 @@ export default function PaymentForm() {
               <CardFooter>
                 <Button
                   className="w-full"
-                  disabled={
-                    status === "executing" ||
-                    !form.formState.isValid ||
-                    !form.formState.isDirty
-                  }
+                  disabled={status === "executing" || !form.formState.isValid}
                   type="submit"
                 >
                   Submit
@@ -222,11 +225,7 @@ export default function PaymentForm() {
               <CardFooter>
                 <Button
                   className="w-full"
-                  disabled={
-                    status === "executing" ||
-                    !form.formState.isValid ||
-                    !form.formState.isDirty
-                  }
+                  disabled={status === "executing" || !form.formState.isValid}
                   type="submit"
                 >
                   Submit

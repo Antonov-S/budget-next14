@@ -2,20 +2,19 @@
 
 import { ColumnDef, Row } from "@tanstack/react-table";
 import Link from "next/link";
+import { useAction } from "next-safe-action/hooks";
 import { MoreHorizontal } from "lucide-react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { useAction } from "next-safe-action/hooks";
 import { deletePayment } from "@/server/actions/delete-payemt";
-import { toast } from "sonner";
 
 type PaymentColumn = {
   id: number;
