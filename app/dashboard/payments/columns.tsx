@@ -37,7 +37,7 @@ const ActionCell = ({ row }: { row: Row<PaymentColumn> }) => {
       }
     },
     onExecute: () => {
-      toast.loading("Deleting Payment");
+      // toast.loading("Deleting Payment");
     }
   });
   const payment = row.original;
@@ -50,7 +50,7 @@ const ActionCell = ({ row }: { row: Row<PaymentColumn> }) => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem className="dark:focus:bg-primary focus:bg-primary/50 cursor-pointer">
+        <DropdownMenuItem className="dark:focus:bg-primary/75 focus:bg-primary/50 cursor-pointer">
           <Link href={`/dashboard/payments?id=${payment.id}`}>
             Edit Product
           </Link>

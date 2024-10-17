@@ -1,8 +1,8 @@
 import React from "react";
-import { BarChart, Package, PenSquare, Settings } from "lucide-react";
+import { PenSquare, Settings } from "lucide-react";
 import { FaPlusMinus } from "react-icons/fa6";
 import { FaUsers } from "react-icons/fa";
-import { HiDocumentAdd, HiCurrencyEuro } from "react-icons/hi";
+import { HiCurrencyEuro } from "react-icons/hi";
 
 import { auth } from "@/server/auth";
 import DashboardNav from "@/components/navigation/dashboard-nav";
@@ -19,6 +19,11 @@ export default async function DashboardLayout({
       label: "Settings",
       path: "/dashboard/settings",
       icon: <Settings size={16} />
+    },
+    {
+      label: "Create",
+      path: "/dashboard/add-payments",
+      icon: <PenSquare size={16} />
     },
     {
       label: "Payments",

@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 
 import { auth } from "@/server/auth";
-import PaymentForm from "./payment-form";
 import { db } from "@/server";
 import { payments } from "@/server/schema";
 import { DataTable } from "./data-table";
@@ -30,7 +29,6 @@ export default async function Payments() {
 
   return (
     <div>
-      {/* <PaymentForm /> */}
       <DataTable columns={columns} data={dataTable} />
     </div>
   );

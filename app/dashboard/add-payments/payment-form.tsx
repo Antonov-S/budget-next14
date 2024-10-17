@@ -51,12 +51,12 @@ export default function PaymentForm() {
         toast.error(data.data?.error);
       }
       if (data.data?.success) {
-        router.push("/");
+        router.push("/dashboard/payments");
         toast.success(data.data?.success);
       }
     },
     onExecute: data => {
-      toast.loading("Creating payment...");
+      // toast.loading("Creating payment...");
     }
     // onError: error => console.log(error)
   });
