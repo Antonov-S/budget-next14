@@ -26,17 +26,20 @@ type PaymentColumn = {
 };
 
 const ActionCell = ({ row }: { row: Row<PaymentColumn> }) => {
+  let loadingToastId: string | number;
   const { status, execute } = useAction(deletePayment, {
     onSuccess: data => {
       if (data.data?.error) {
-        toast.error(data.data?.error);
+        toast.dismiss(loadingToastId);
+        toast.error(data.data?.error, { duration: 2000 });
       }
       if (data.data?.success) {
-        toast.success(data.data?.success);
+        toast.dismiss(loadingToastId);
+        toast.success(data.data?.success, { duration: 2000 });
       }
     },
     onExecute: () => {
-      // toast.loading("Deleting Payment");
+      loadingToastId = toast.loading("Deleting Payment");
     }
   });
   const payment = row.original;
@@ -50,15 +53,15 @@ const ActionCell = ({ row }: { row: Row<PaymentColumn> }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem className="dark:focus:bg-primary/75 focus:bg-primary/50 cursor-pointer">
-          <Link href={`/dashboard/payments?id=${payment.id}`}>
-            Edit Product
+          <Link href={`/dashboard/add-payments?id=${payment.id}`}>
+            Edit Payment
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => execute({ id: payment.id })}
           className="dark:focus:bg-destructive focus:bg-destructive/50 cursor-pointer"
         >
-          Delete Product
+          Delete Payment
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
